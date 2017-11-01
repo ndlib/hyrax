@@ -405,21 +405,21 @@ en:
       actions:
         add_existing_works:
           desc: "Add existing works to this Collection"
-          label: "Add existing works"
+          label: "Add existing works to this collection"
         add_new_work:
-          desc: "Add new work to this Collection"
-          label: "Add new work"
+          desc: "Deposit new work through this collection"
+          label: "Deposit new work through this collection"
         delete:
           confirmation: "Delete this collection?"
           desc: "Delete this collection"
-          label: "Delete"
+          label: "Delete collection"
         edit:
           desc: "Edit this collection"
-          label: "Edit"
+          label: "Edit collection"
         header: "Actions"
         nest_collections:
-          desc: "Nest other collections within this Collection"
-          label: "Add existing collection"
+          desc: "Add existing collections to this collection"
+          label: "Add existing collections to this collection"
       browse_view: "Browse View"
       document_list:
         edit: "Edit"

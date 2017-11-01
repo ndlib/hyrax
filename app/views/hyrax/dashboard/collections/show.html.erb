@@ -4,59 +4,78 @@
   <h1><span class="fa fa-file"></span> <%= t('.header') %></h1>
 <% end %>
 
-<div itemscope itemtype="http://schema.org/CollectionPage" class="row collection">
-  <header>
-    <div class="col-md-12">
+<div class="collections-wrapper">
+
+  <section class="panel panel-default collections-panel-wrapper admin-show-page">
+    <div class="panel-heading">
       <%= render 'collection_title', presenter: @presenter %>
     </div>
-  </header>
 
-  <div class="col-xs-3">
-      <%= render 'hyrax/collections/media_display', presenter: @presenter %>
-      <%= link_to t('.public_view_label'), collection_path(id: @presenter.id) %>
-  </div>
-  <div>
-      <%= render 'hyrax/collections/collection_description', presenter: @presenter %>
-  </div>
-  <div class="col-md-12">
-    <% unless has_collection_search_parameters? %>
-      <%= render 'show_descriptions' %>
-    <% end %>
-  </div>
-</div>
+    <div class="panel-body">
 
-<div class="row">
-  <div class="col-md-12 h2">
-    <% if has_collection_search_parameters? %>
-        <%= t('.search_results') %>
-    <% end %>
-  </div>
-  <div class="col-xs-6 col-md-5 col-lg-6 pull-right">
-    <%# TODO: leaving this as it was causes rerouting to the public show page. needs work %>
-    <%= render 'hyrax/collections/search_form', presenter: @presenter %>
-  </div>
-</div>
+      <!-- Collection Info -->
+      <section>
+        <div itemscope itemtype="http://schema.org/CollectionPage" class="row collection">
+          <div class="col-sm-3 text-center">
+              <%= render 'hyrax/collections/media_display', presenter: @presenter %>
+              <%= link_to t('.public_view_label'), collection_path(id: @presenter.id) %>
+          </div>
+          <!-- Collection Description(s) -->
+          <div class="col-sm-9 collection-description-wrapper">
+            <section class="parent-collection-wrapper">
+              <h4>Parent Collection</h4>
+              <a href="#">Butterflies of the World</a>
+              <span class="parent-collections-count">(24)</span>
+            </section>
 
-<% if @presenter.collection_type_is_nestable? %>
+            <section>
+              <%= render 'hyrax/collections/collection_description', presenter: @presenter %>
+              <!-- TODO: Remove this.  Just mock text if presenter.description == [] -->
+              <p><strong>This is the collection description.</strong>  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              </p>
+              <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            </section>
 
-  <div class="row">
-    <div class="col-md-12 h2">
-      <%= t('.subcollection_count') %> (<%= @subcollection_count %>)
-      <%= render 'show_subcollection_actions', presenter: @presenter %>
-    </div>
-  </div>
-  <%= render 'subcollection_list', collection: @subcollection_docs %>
-<% end %>
+            <% unless has_collection_search_parameters? %>
+              <%= render 'show_descriptions' %>
+            <% end %>
+          </div>
+        </div>
+      </section>
 
-<div class="row">
-  <div class="col-md-12 h2">
-    <%= t('.item_count') %> (<%= @members_count %>)
-    <%= render 'show_add_items_actions', presenter: @presenter %>
-  </div>
-</div>
+      <!-- Search -->
+      <section>
+        <div class="row">
+          <div class="col-sm-6">
+            <%# TODO: leaving this as it was causes rerouting to the public show page. needs work %>
+            <%= render 'hyrax/collections/search_form', presenter: @presenter %>
+          </div>
+        </div>
+        <% if has_collection_search_parameters? %>
+            <%= t('.search_results') %>
+        <% end %>
+      </section>
 
-<div class="col-md-12">
-  <%= render 'sort_and_per_page', collection: @presenter %>
-  <%= render_document_index @member_docs %>
-  <%= render 'hyrax/collections/paginate' %>
-</div>
+      <!-- Subcollections -->
+      <% if @presenter.collection_type_is_nestable? %>
+        <section>
+          <h2><%= t('.subcollection_count') %> (<%= @subcollection_count %>)</h2>
+          <%= render 'show_subcollection_actions', presenter: @presenter %>
+          <%= render 'subcollection_list', collection: @subcollection_docs %>
+        </section>
+      <% end %>
+
+      <!-- Works -->
+      <section>
+        <h2><%= t('.item_count') %> (<%= @members_count %>)</h2>
+        <%= render 'show_add_items_actions', presenter: @presenter %>
+
+        <%= render 'sort_and_per_page', collection: @presenter %>
+        <%= render_document_index @member_docs %>
+        <%= render 'hyrax/collections/paginate' %>
+      </section>
+    </div><!-- /panel-body -->
+
+  </section><!-- /collections-panel-wrapper -->
+
+</div><!-- /collections-wrapper -->

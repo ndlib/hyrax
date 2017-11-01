@@ -62,6 +62,10 @@ header {
 .actions-controls-collections {
   display: block;
   margin: 1em 0 0 1em;
+
+  .deposit-new-work-through-collection {
+    margin-bottom: 8px;
+  }
 }
 
 .label-default a:link,
@@ -150,6 +154,13 @@ button.branding-banner-remove:hover {
         text-align: left;
       }
     }
+
+    &.collection-works-table {
+
+      .title-column {
+        width: 40%;
+      }
+    }
   }
 
   // Datatable overwrites
@@ -224,6 +235,30 @@ button.branding-banner-remove:hover {
     .collection-type-title {
       margin-top: 0;
     }
+  }
+}
+
+.admin-show-page {
+  .panel-body > section {
+      margin-bottom: 40px;
+  }
+
+  .panel-heading {
+    vertical-align: middle;
+
+    .btn {
+      margin-left: 5px;
+    }
+  }
+
+  .collection-description-wrapper {
+    section {
+      margin-bottom: 30px;
+    }
+  }
+
+  .parent-collections-count {
+    font-weight: bold;
   }
 }
 
