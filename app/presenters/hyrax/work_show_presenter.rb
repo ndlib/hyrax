@@ -2,6 +2,7 @@ module Hyrax
   class WorkShowPresenter
     include ModelProxy
     include PresentsAttributes
+    include ManifestComponents
     attr_accessor :solr_document, :current_ability, :request
 
     class_attribute :collection_presenter_class
@@ -52,10 +53,6 @@ module Hyrax
     def download_url
       return '' if representative_presenter.nil?
       Hyrax::Engine.routes.url_helpers.download_url(representative_presenter, host: request.host)
-    end
-
-    def manifest_url
-      manifest_helper.polymorphic_url([:manifest, self])
     end
 
     # @return FileSetPresenter presenter for the representative FileSets
@@ -155,10 +152,6 @@ module Hyrax
           @featured = FeaturedWork.where(work_id: solr_document.id).exists?
         end
         @featured
-      end
-
-      def manifest_helper
-        @manifest_helper ||= ManifestHelper.new(request.base_url)
       end
 
       def user_can_feature_works?

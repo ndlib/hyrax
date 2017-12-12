@@ -100,7 +100,8 @@ module Hyrax
       end
 
       def destroy
-        unlink_from_work
+        unlink_from_work(file_set.parent)
+        unlink_rendering(file_set.parent)
         file_set.destroy
         Hyrax.config.callback.run(:after_destroy, file_set.id, user)
       end
@@ -144,13 +145,19 @@ module Hyrax
           !((file_set_params || {}).keys.map(&:to_s) & %w[visibility embargo_release_date lease_expiration_date]).empty?
         end
 
-        def unlink_from_work
-          work = file_set.parent
+        # Must clear the fileset from the thumbnail_id, representative_id and rendering_ids fields on the work
+        #   and force it to be re-solrized.
+        # Although ActiveFedora clears the children nodes it leaves those fields in Solr populated.
+        def unlink_from_work(work)
           return unless work && (work.thumbnail_id == file_set.id || work.representative_id == file_set.id)
-          # Must clear the thumbnail_id and representative_id fields on the work and force it to be re-solrized.
-          # Although ActiveFedora clears the children nodes it leaves those fields in Solr populated.
           work.thumbnail = nil if work.thumbnail_id == file_set.id
           work.representative = nil if work.representative_id == file_set.id
+          work.save!
+        end
+
+        def unlink_rendering(work)
+          return unless work && work.rendering_ids.include?(file_set.id)
+          work.rendering_ids -= [file_set.id]
           work.save!
         end
     end
