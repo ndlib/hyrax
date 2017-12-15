@@ -122,30 +122,6 @@ RSpec.describe Hyrax::Collections::PermissionsService do
       allow(user).to receive(:groups).and_return(['view_group', 'deposit_group', 'manage_group'])
     end
 
-    describe '.admin_set_ids_for_user' do
-      it 'returns admin set ids where user has manage access' do
-        expect(described_class.admin_set_ids_for_user(access: 'manage', ability: ability)).to match_array [as_mu.id, as_mg.id]
-      end
-      it 'returns admin set ids where user has deposit access' do
-        expect(described_class.admin_set_ids_for_user(access: 'deposit', ability: ability)).to match_array [as_du.id, as_dg.id]
-      end
-      it 'returns admin set ids where user has view access' do
-        expect(described_class.admin_set_ids_for_user(access: 'view', ability: ability)).to match_array [as_vu.id, as_vg.id]
-      end
-      it 'returns admin set ids where user has manage, deposit, or view access' do
-        all = [as_mu.id, as_mg.id, as_du.id, as_dg.id, as_vu.id, as_vg.id]
-        expect(described_class.admin_set_ids_for_user(access: ['manage', 'deposit', 'view'], ability: ability)).to match_array all
-      end
-
-      context 'when user has no access' do
-        let(:ability) { Ability.new(user2) }
-
-        it 'returns empty array' do
-          expect(described_class.admin_set_ids_for_user(access: ['manage', 'deposit', 'view'], ability: ability)).to match_array []
-        end
-      end
-    end
-
     describe '.collection_ids_for_user' do
       it 'returns collection ids where user has manage access' do
         expect(described_class.collection_ids_for_user(access: 'manage', ability: ability)).to match_array [col_mu.id, col_mg.id]
