@@ -114,18 +114,13 @@ module Hyrax
         @collection.attributes = collection_params.except(:members, :parent_id)
         @collection.apply_depositor_metadata(current_user.user_key)
         add_members_to_collection unless batch.empty?
-        # Assumes collections without a collection_type_gid were migrated from Hyrax 2.0.0 or earlier.  Set it to the default User Collection type.
-        @collection.collection_type_gid = params[:collection_type_gid].presence || default_collection_type_gid
+        @collection.collection_type_gid = params[:collection_type_gid]
         @collection.visibility = Hydra::AccessControls::AccessRight::VISIBILITY_TEXT_VALUE_PRIVATE unless @collection.discoverable?
         if @collection.save
           after_create
         else
           after_create_error
         end
-      end
-
-      def default_collection_type_gid
-        Hyrax::CollectionType.find_or_create_default_collection_type.gid
       end
 
       def after_update
