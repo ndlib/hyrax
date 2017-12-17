@@ -207,7 +207,7 @@ RSpec.describe Hyrax::CollectionType, type: :model do
     end
 
     context 'for admin set collection type' do
-      let(:collection_type) { create(:admin_set_collection_type) }
+      let(:collection_type) { Hyrax::CollectionType.find_or_create_admin_set_type }
 
       before do
         allow(collection_type).to receive(:collections?).and_return(false)
@@ -220,7 +220,7 @@ RSpec.describe Hyrax::CollectionType, type: :model do
     end
 
     context 'for user collection type' do
-      let(:collection_type) { create(:user_collection_type) }
+      let(:collection_type) { Hyrax::CollectionType.find_or_create_default_collection_type }
 
       before do
         allow(collection_type).to receive(:collections?).and_return(false)

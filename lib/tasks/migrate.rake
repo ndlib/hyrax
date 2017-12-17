@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/BlockLength
 namespace :hyrax do
   namespace :migrate do
     task move_all_works_to_admin_set: :environment do
@@ -36,3 +37,4 @@ namespace :hyrax do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

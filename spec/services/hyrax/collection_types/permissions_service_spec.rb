@@ -6,8 +6,8 @@ RSpec.describe Hyrax::CollectionTypes::PermissionsService do
   let(:user_other) { create(:user) }
   let(:user_admin) { create(:user, groups: 'admin') }
 
-  let!(:user_collection_type) { create(:user_collection_type) }
-  let!(:admin_set_collection_type) { create(:admin_set_collection_type) }
+  let!(:user_collection_type) { Hyrax::CollectionType.find_or_create_default_collection_type }
+  let!(:admin_set_collection_type) { Hyrax::CollectionType.find_or_create_admin_set_type }
   let!(:collection_type) { create(:collection_type, creator_user: user_cu, creator_group: 'create_group', manager_user: user_mu, manager_group: 'manage_group') }
 
   describe '.collection_types_for_user' do # Also tests .collection_type_ids_for_user which is called by .collection_types_for_user

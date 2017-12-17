@@ -3,8 +3,8 @@ RSpec.describe 'collection_type', type: :feature, clean_repo: true do
   let(:exhibit_title) { 'Exhibit' }
   let(:exhibit_description) { 'Description for exhibit collection type.' }
   let(:exhibit_collection_type) { create(:collection_type, title: exhibit_title, description: exhibit_description, creator_user: admin_user) }
-  let(:user_collection_type) { create(:user_collection_type) }
-  let(:admin_set_type) { create(:admin_set_collection_type) }
+  let(:user_collection_type) { Hyrax::CollectionType.find_or_create_default_collection_type }
+  let(:admin_set_type) { Hyrax::CollectionType.find_or_create_admin_set_type }
   let(:solr_gid) { Collection.collection_type_gid_document_field_name }
 
   describe 'index' do

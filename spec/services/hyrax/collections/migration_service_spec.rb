@@ -1,4 +1,4 @@
-RSpec.describe Hyrax::Collections::PermissionsCreateService, clean_repo: true do
+RSpec.describe Hyrax::Collections::MigrationService, clean_repo: true do
   let(:user) { create(:user) }
   let(:editor1) { create(:user) }
   let(:editor2) { create(:user) }
@@ -14,10 +14,10 @@ RSpec.describe Hyrax::Collections::PermissionsCreateService, clean_repo: true do
       let!(:col_mu) { build(:typeless_collection, id: 'col_mu', user: user, edit_users: [user.user_key, editor1.user_key, editor2.user_key], do_save: true) }
       let!(:col_mg) { build(:typeless_collection, id: 'col_mg', user: user, edit_users: [user.user_key], edit_groups: ['edit_group1', 'edit_group_2'], do_save: true) }
 
-      it 'sets gid and adds permissions' do
+      it 'sets gid and adds permissions' do # rubocop:disable RSpec/ExampleLength
         Collection.all.each do |col|
           expect(col.collection_type_gid).to be_nil
-          expect{ Hyrax::PermissionTemplate.find_by!(source_id: col.id) }.to raise_error ActiveRecord::RecordNotFound
+          expect { Hyrax::PermissionTemplate.find_by!(source_id: col.id) }.to raise_error ActiveRecord::RecordNotFound
         end
 
         Hyrax::Collections::MigrationService.migrate_all_collections
@@ -35,7 +35,11 @@ RSpec.describe Hyrax::Collections::PermissionsCreateService, clean_repo: true do
     end
 
     context 'when newer collections are found (e.g. collections created at or after Hyrax 2.1.0)' do
-      let!(:collection) { create(:collection, id: 'col_newer', user: user, with_permission_template: true, collection_type_settings: [:discoverable], edit_users: [user.user_key]) }
+      let!(:collection) do
+        create(:collection, id: 'col_newer', user: user, with_permission_template: true,
+                            collection_type_settings: [:discoverable], edit_users: [user.user_key],
+                            create_access: true)
+      end
       let!(:permission_template) { collection.permission_template }
       let!(:collection_type_gid) { collection.collection_type_gid }
       let!(:edit_users) { collection.edit_users }

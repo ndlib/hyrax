@@ -10,7 +10,7 @@ module Hyrax
         Rails.logger.info "*** Migrating #{Collection.count} collections"
         Collection.all.each do |col|
           migrate_collection(col)
-          print '.'
+          Rails.logger.info "  migrating collection - id: #{col.id}, title: #{col.title}"
         end
         Rails.logger.info "--- Migration Complete"
       end

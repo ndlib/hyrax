@@ -45,6 +45,13 @@ FactoryBot.define do
         workflow = create(:workflow, active: true, permission_template: permission_template)
         create(:workflow_action, workflow: workflow) # Need to create a single action that can be taken
       end
+      unless evaluator.depositor.nil?
+        create(:permission_template_access,
+               :manage,
+               permission_template: permission_template,
+               agent_type: 'user',
+               agent_id: evaluator.depositor.user_key)
+      end
     end
 
     transient do
@@ -52,6 +59,7 @@ FactoryBot.define do
       with_collection false
       with_workflows false
       with_active_workflow false
+      depositor nil
     end
   end
 end
