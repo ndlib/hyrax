@@ -5,7 +5,7 @@ module Hyrax
         private
 
           def index_key
-            Solrizer.solr_name("resource_type", :facetable)
+            Solrizer.solr_name("resource_type", :symbol)
           end
       end
     end
